@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+  app:
+    build: .
+    container_name: bus_api
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/usr/src/app
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    ports:
+      - '3007:3000'
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: 'mysql:5.7'
+    container_name: bus_db
+    restart: unless-stopped
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_USER: bus
+      MYSQL_PASSWORD: bus_password
+      MYSQL_ROOT_PASSWORD: 5ecR3t_pA55w0rD
